@@ -1,125 +1,262 @@
-const { ButtonInteraction } = require('discord.js');
-const { requireServerManager } = require('../config/permissions');
+const {
+  requireServerManager
+} = require('../config/permissions');
 
-module.exports = async (interaction, ctx, commands) => {
+module.exports = async (
+  interaction,
+  ctx,
+  commands
+) => {
+
   try {
 
-    // =========================
+    // ========================================
     // CHAT INPUT COMMANDS
-    // =========================
-    if (interaction.isChatInputCommand()) {
+    // ========================================
+
+    if (
+      interaction.isChatInputCommand()
+    ) {
 
       let key;
 
-      if (interaction.commandName === 'promo') {
 
-        const sub = interaction.options.getSubcommand();
-        key = `promo:${sub}`;
+      // ======================================
+      // PROMO
+      // /promo create
+      // /promo test_dm
+      // ======================================
 
-      } else if (interaction.commandName === 'server') {
+      if (
+        interaction.commandName === 'promo'
+      ) {
 
-        const sub = interaction.options.getSubcommand();
-        key = `server:${sub}`;
+        const subcommand =
+          interaction.options.getSubcommand();
 
-      } else if (interaction.commandName === 'admin') {
+        key =
+          `promo:${subcommand}`;
+      }
+
+
+      // ======================================
+      // SERVER
+      // /server list
+      // /server stats
+      // ======================================
+
+      else if (
+        interaction.commandName === 'server'
+      ) {
+
+        const subcommand =
+          interaction.options.getSubcommand();
+
+        key =
+          `server:${subcommand}`;
+      }
+
+
+      // ======================================
+      // ADMIN
+      // /admin settings
+      // /admin blacklist add
+      // /admin blacklist remove
+      // /admin blacklist list
+      // ======================================
+
+      else if (
+        interaction.commandName === 'admin'
+      ) {
 
         const group =
-          interaction.options.getSubcommandGroup(false);
+          interaction.options
+            .getSubcommandGroup(false);
 
-        if (group === 'blacklist') {
 
-          // /admin blacklist add/remove/list
-          key = 'admin:blacklist';
+        // ------------------------------
+        // /admin blacklist ...
+        // ------------------------------
 
-        } else {
+        if (
+          group === 'blacklist'
+        ) {
 
-          // /admin settings
-          const sub = interaction.options.getSubcommand();
-          key = `admin:${sub}`;
+          key =
+            'admin:blacklist';
+
         }
 
-      } else {
 
-        key = interaction.commandName;
+        // ------------------------------
+        // /admin settings
+        // ------------------------------
+
+        else {
+
+          const subcommand =
+            interaction.options.getSubcommand();
+
+          key =
+            `admin:${subcommand}`;
+        }
       }
 
-      const command = commands.get(key);
+
+      // ======================================
+      // OTHER COMMAND
+      // ======================================
+
+      else {
+
+        key =
+          interaction.commandName;
+      }
+
+
+      // ======================================
+      // FIND COMMAND
+      // ======================================
+
+      const command =
+        commands.get(key);
+
 
       if (!command) {
+
         return interaction.reply({
-          content: 'Command handler not found.',
+          content:
+            '❌ Command handler not found.',
           ephemeral: true
         });
+
       }
 
-      /*
-       * Discord requires an interaction acknowledgement
-       * within approximately 3 seconds.
-       *
-       * Some commands perform GitHub/database/member
-       * operations which can take longer.
-       *
-       * Defer immediately, then convert command.reply()
-       * into editReply().
-       */
+
+      // ======================================
+      // DEFER IMMEDIATELY
+      // Prevent Discord 3-second timeout
+      // ======================================
 
       await interaction.deferReply({
         ephemeral: true
       });
 
-      const deferredInteraction = new Proxy(
-        interaction,
-        {
-          get(target, property) {
 
-            if (property === 'reply') {
+      // ======================================
+      // COMMAND PROXY
+      // Converts reply() → editReply()
+      // ======================================
 
-              return async (options = {}) => {
+      const proxy =
+        new Proxy(
+          interaction,
+          {
 
-                return target.editReply(options);
-              };
-            }
-
-            if (property === 'followUp') {
-
-              return async (options = {}) => {
-
-                return target.followUp(options);
-              };
-            }
-
-            return Reflect.get(
+            get(
               target,
-              property,
-              target
-            );
-          }
-        }
-      );
+              property
+            ) {
 
-      await command.execute(
-        deferredInteraction,
+              // --------------------------------
+              // reply()
+              // --------------------------------
+
+              if (
+                property === 'reply'
+              ) {
+
+                return async (
+                  options = {}
+                ) => {
+
+                  return target.editReply(
+                    options
+                  );
+
+                };
+              }
+
+
+              // --------------------------------
+              // followUp()
+              // --------------------------------
+
+              if (
+                property === 'followUp'
+              ) {
+
+                return async (
+                  options = {}
+                ) => {
+
+                  return target.followUp(
+                    options
+                  );
+
+                };
+              }
+
+
+              // --------------------------------
+              // Default properties
+              // --------------------------------
+
+              return Reflect.get(
+                target,
+                property,
+                target
+              );
+
+            }
+
+          }
+        );
+
+
+      // ======================================
+      // EXECUTE COMMAND
+      // ======================================
+
+      return await command.execute(
+        proxy,
         ctx
       );
-
-      return;
     }
 
 
-    // =========================
+    // ========================================
     // BUTTON INTERACTIONS
-    // =========================
-    if (interaction.isButton()) {
+    // ========================================
+
+    if (
+      interaction.isButton()
+    ) {
 
       const [
         scope,
         action,
         id
-      ] = interaction.customId.split(':');
+      ] =
+        interaction.customId.split(':');
 
-      if (scope !== 'promo') {
+
+      // --------------------------------------
+      // Only promo buttons
+      // --------------------------------------
+
+      if (
+        scope !== 'promo'
+      ) {
+
         return;
+
       }
+
+
+      // --------------------------------------
+      // Permission check
+      // --------------------------------------
 
       if (
         !requireServerManager(
@@ -127,28 +264,50 @@ module.exports = async (interaction, ctx, commands) => {
           ctx.config
         )
       ) {
+
         return interaction.reply({
           content:
             'You need server administration permission.',
           ephemeral: true
         });
+
       }
 
-      /*
-       * Acknowledge button immediately because
-       * campaign/database operations can take time.
-       */
+
+      // --------------------------------------
+      // Defer button interaction
+      // --------------------------------------
 
       await interaction.deferUpdate();
 
-      const c =
+
+      // --------------------------------------
+      // Get campaign
+      // --------------------------------------
+
+      const campaign =
         await ctx.campaignService.get(id);
 
-      // =========================
-      // CANCEL
-      // =========================
 
-      if (action === 'cancel') {
+      if (!campaign) {
+
+        return interaction.editReply({
+          content:
+            `❌ Campaign ${id} not found.`,
+          embeds: [],
+          components: []
+        });
+
+      }
+
+
+      // ======================================
+      // CANCEL
+      // ======================================
+
+      if (
+        action === 'cancel'
+      ) {
 
         await ctx.campaignService.setStatus(
           id,
@@ -159,19 +318,31 @@ module.exports = async (interaction, ctx, commands) => {
           }
         );
 
+
         return interaction.editReply({
-          content: `🛑 ${id} cancelled.`,
+
+          content:
+            `🛑 ${id} cancelled.`,
+
           embeds: [],
+
           components: []
+
         });
       }
 
 
-      // =========================
+      // ======================================
       // START
-      // =========================
+      // ======================================
 
-      if (action === 'start') {
+      if (
+        action === 'start'
+      ) {
+
+        // ------------------------------------
+        // Validate status
+        // ------------------------------------
 
         if (
           ![
@@ -179,82 +350,153 @@ module.exports = async (interaction, ctx, commands) => {
             'preview',
             'paused',
             'recovering'
-          ].includes(c.status)
+          ].includes(
+            campaign.status
+          )
         ) {
 
           return interaction.editReply({
+
             content:
-              `Campaign cannot be started from status ${c.status}.`,
+              `Campaign cannot be started from status ${campaign.status}.`,
+
             embeds: [],
+
             components: []
+
           });
         }
 
-        const p =
-          await ctx.campaignService.preview(id);
 
-        const cp =
-          await ctx.campaignService.getLatestCheckpoint(id);
+        // ------------------------------------
+        // Generate preview
+        // ------------------------------------
+
+        const preview =
+          await ctx.campaignService.preview(
+            id
+          );
+
+
+        // ------------------------------------
+        // Get checkpoint
+        // ------------------------------------
+
+        const checkpoint =
+          await ctx.campaignService
+            .getLatestCheckpoint(id);
+
+
+        // ------------------------------------
+        // Initialize checkpoint
+        // ------------------------------------
 
         if (
-          !cp ||
-          cp.total_batches === 0
+          !checkpoint ||
+          checkpoint.total_batches === 0
         ) {
 
-          await ctx.campaignService.initializeCheckpoint(
-            c,
-            p.total_users,
-            p.total_batches
-          );
+          await ctx.campaignService
+            .initializeCheckpoint(
+              campaign,
+              preview.total_users,
+              preview.total_batches
+            );
+
         }
+
+
+        // ------------------------------------
+        // Set running
+        // ------------------------------------
 
         await ctx.campaignService.setStatus(
           id,
           'running',
           {
             started_at:
-              c.started_at ||
+              campaign.started_at ||
               new Date().toISOString()
           }
         );
+
+
+        // ------------------------------------
+        // Start queue
+        // ------------------------------------
 
         await ctx.queueService.enqueue(
           id,
           false
         );
 
+
+        // ------------------------------------
+        // Response
+        // ------------------------------------
+
         return interaction.editReply({
+
           content:
             `▶️ ${id} started in simulation mode. No Discord DMs will be sent.`,
+
           embeds: [],
+
           components: []
+
         });
       }
 
+
+      // ======================================
+      // UNKNOWN ACTION
+      // ======================================
+
       return interaction.editReply({
-        content: 'Unknown campaign action.',
+
+        content:
+          `❌ Unknown campaign action: ${action}`,
+
         embeds: [],
+
         components: []
+
       });
     }
 
-  } catch (err) {
+  }
+
+
+  // ========================================
+  // ERROR HANDLER
+  // ========================================
+
+  catch (error) {
 
     ctx.logger.error(
       'Interaction failed',
       {
-        error: err.message,
-        stack: err.stack
+        error: error.message,
+        stack: error.stack
       }
     );
 
+
     const payload = {
+
       content:
-        `Error: ${err.message}`,
+        `❌ Error: ${error.message}`,
+
       ephemeral: true
+
     };
 
+
     try {
+
+      // --------------------------------------
+      // Already deferred/replied
+      // --------------------------------------
 
       if (
         interaction.deferred ||
@@ -264,20 +506,32 @@ module.exports = async (interaction, ctx, commands) => {
         return await interaction.editReply(
           payload
         );
+
       }
+
+
+      // --------------------------------------
+      // Not acknowledged yet
+      // --------------------------------------
 
       return await interaction.reply(
         payload
       );
 
-    } catch (replyError) {
+    }
+
+    catch (replyError) {
 
       ctx.logger.error(
         'Failed to send interaction error',
         {
-          error: replyError.message
+          error:
+            replyError.message
         }
       );
+
     }
+
   }
+
 };
