@@ -238,5 +238,20 @@
     "attempt": 1,
     "created_at": "2026-10-03T14:45:04.649Z",
     "updated_at": "2026-10-03T14:45:04.649Z"
+  },
+  {
+    "delivery_id": "DLV-000017",
+    "campaign_id": "CMP-384421",
+    "user_id": "1239862423985328144",
+    "source_guild_id": "1234814455116861470",
+    "target_guild_id": "1234814455116861470",
+    "batch_number": 1,
+    "status": "simulated",
+    "reason_code": "SIMULATION_ONLY",
+    "reason_message": "Educational simulation; no Discord message was sent",
+    "idempotency_key": "CMP-384421:1239862423985328144",
+    "attempt": 1,
+    "created_at": "2026-10-03T14:45:06.029Z",
+    "updated_at": "2026-10-03T14:45:06.029Z"
   }
 ]
