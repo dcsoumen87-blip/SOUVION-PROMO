@@ -1,1 +1,21 @@
-[]
+[
+  {
+    "checkpoint_id": "CHK-115621",
+    "campaign_id": "CMP-384421",
+    "version": 1,
+    "status": "running",
+    "current_batch": 1,
+    "last_completed_batch": 0,
+    "total_batches": 1,
+    "total_users": 22,
+    "processed_users": 0,
+    "simulated_users": 0,
+    "skipped_users": 0,
+    "failed_users": 0,
+    "last_processed_user_id": null,
+    "processed_user_ids": [],
+    "started_at": "2026-10-03T14:44:37.456Z",
+    "updated_at": "2026-10-03T14:44:37.456Z",
+    "checkpoint_at": "2026-10-03T14:44:37.456Z"
+  }
+]
