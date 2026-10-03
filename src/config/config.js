@@ -10,7 +10,9 @@ const required = [
   'BOT_OWNER_ID'
 ];
 
-const missing = required.filter((k) => !process.env[k]);
+const missing = required.filter(
+  key => !process.env[key]
+);
 
 if (missing.length) {
   throw new Error(
@@ -27,17 +29,22 @@ module.exports = {
     owner: process.env.GITHUB_OWNER,
     repo: process.env.GITHUB_REPO,
 
-    // Database আলাদা branch-এ থাকবে
-    branch: process.env.GITHUB_DATA_BRANCH || 'database',
+    branch:
+      process.env.GITHUB_DATA_BRANCH || 'database',
 
-    // Railway যেই branch deploy করবে
-    baseBranch: process.env.GITHUB_BRANCH || 'main'
+    baseBranch:
+      process.env.GITHUB_BRANCH || 'main'
   },
 
   botOwnerId: process.env.BOT_OWNER_ID,
 
-  port: Number(process.env.PORT || 3000),
+  port: Number(
+    process.env.PORT || 3000
+  ),
 
-  rootDir: path.resolve(__dirname, '../..'),
-  dataDir: path.resolve(__dirname, '../../data')
+  rootDir:
+    path.resolve(__dirname, '../..'),
+
+  dataDir:
+    path.resolve(__dirname, '../../data')
 };
