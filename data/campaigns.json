@@ -12,5 +12,19 @@
     "created_at": "2026-10-03T14:37:59.286Z",
     "updated_at": "2026-10-03T14:37:59.286Z",
     "recovery_count": 0
+  },
+  {
+    "campaign_id": "CMP-384421",
+    "name": "hi",
+    "source_guild_id": "1234814455116861470",
+    "target_guild_ids": [
+      "1234814455116861470"
+    ],
+    "message": "hi",
+    "batch_size": 25,
+    "status": "draft",
+    "created_at": "2026-10-03T14:41:44.888Z",
+    "updated_at": "2026-10-03T14:41:44.888Z",
+    "recovery_count": 0
   }
 ]
