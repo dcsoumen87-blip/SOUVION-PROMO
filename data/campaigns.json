@@ -22,9 +22,9 @@
     ],
     "message": "hi",
     "batch_size": 25,
-    "status": "draft",
+    "status": "preview",
     "created_at": "2026-10-03T14:41:44.888Z",
-    "updated_at": "2026-10-03T14:41:44.888Z",
+    "updated_at": "2026-10-03T14:44:24.356Z",
     "recovery_count": 0
   }
 ]
