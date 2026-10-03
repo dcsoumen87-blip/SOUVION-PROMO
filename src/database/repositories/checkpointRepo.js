@@ -1,0 +1,2 @@
+class CheckpointRepo{constructor(db){this.db=db;} list(){return this.db.read('checkpoints.json');} async latest(campaignId){const a=await this.list();return a.filter(x=>x.campaign_id===campaignId).sort((x,y)=>y.version-x.version)[0]||null;} async save(cp){return this.db.update('checkpoints.json',a=>{const i=a.findIndex(x=>x.checkpoint_id===cp.checkpoint_id);if(i<0)a.push(cp);else a[i]=cp;return a;});}}
+module.exports={CheckpointRepo};

@@ -1,0 +1,1 @@
+const router=require('express').Router();router.get('/',async(req,res)=>{try{res.json(await req.app.locals.ctx.campaignRepo.list());}catch(e){res.status(500).json({error:e.message});}});module.exports=router;

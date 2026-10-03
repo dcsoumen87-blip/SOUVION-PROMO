@@ -1,0 +1,2 @@
+const logger=require('../utils/logger');
+module.exports=async(client,ctx)=>{logger.info('Bot started',{user:client.user.tag,guilds:client.guilds.cache.size});for(const g of client.guilds.cache.values()){await ctx.serverService.registerGuild(g);}const recoverable=await ctx.recoveryService.scan();for(const x of recoverable){if(['running','recovering'].includes(x.campaign.status))await ctx.queueService.enqueue(x.campaign.campaign_id,true);}logger.info('Startup recovery scan complete',{recoverable:recoverable.length});};

@@ -1,0 +1,20 @@
+{
+  "name": "souvion-promo",
+  "version": "1.0.0",
+  "description": "Educational Discord campaign simulator with GitHub-backed persistence.",
+  "main": "src/index.js",
+  "type": "commonjs",
+  "engines": { "node": ">=20" },
+  "scripts": {
+    "start": "node src/index.js",
+    "dev": "node --watch src/index.js",
+    "deploy": "node scripts/deploy-commands.js",
+    "seed": "node scripts/seed-data.js",
+    "test": "node --test"
+  },
+  "dependencies": {
+    "discord.js": "^14.24.2",
+    "dotenv": "^17.2.2",
+    "express": "^5.1.0"
+  }
+}

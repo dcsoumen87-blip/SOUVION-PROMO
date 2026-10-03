@@ -1,0 +1,2 @@
+require('dotenv').config();const {GitHubDatabase}=require('../src/database/githubDatabase');const config=require('../src/config/config');
+(async()=>{const db=new GitHubDatabase(config);await db.init();await db.update('settings.json',s=>({...s,default_batch_size:s.default_batch_size||25,max_batch_size:s.max_batch_size||100,simulator_only:true}));console.log('Seed/initialization complete.');})().catch(e=>{console.error(e);process.exit(1);});

@@ -1,0 +1,3 @@
+const express=require('express');
+function createDashboard(ctx){const app=express();app.use(express.json());app.locals.ctx=ctx;app.use((req,res,next)=>{if(req.path==='/health')return next();const expected=process.env.DASHBOARD_TOKEN;if(expected&&req.get('authorization')!==`Bearer ${expected}`)return res.status(401).json({error:'Unauthorized'});next();});app.get('/',(req,res)=>res.sendFile(require('node:path').join(__dirname,'views/index.html')));app.use('/campaigns',require('./routes/campaigns'));app.use('/servers',require('./routes/servers'));app.use('/analytics',require('./routes/analytics'));app.get('/health',(req,res)=>res.json({status:'ok',service:'souvion-promo'}));return app;}
+module.exports={createDashboard};

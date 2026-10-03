@@ -1,0 +1,2 @@
+class LogRepo{constructor(db){this.db=db;} list(){return this.db.read('delivery_logs.json');} async findByKey(key){return (await this.list()).find(x=>x.idempotency_key===key)||null;} async appendMany(records){return this.db.update('delivery_logs.json',a=>{const keys=new Set(a.map(x=>x.idempotency_key));for(const r of records){if(!keys.has(r.idempotency_key)){a.push(r);keys.add(r.idempotency_key);}}return a;});} async append(r){return this.appendMany([r]);} }
+module.exports={LogRepo};
