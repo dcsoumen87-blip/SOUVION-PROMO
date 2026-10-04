@@ -44,23 +44,24 @@
   {
     "checkpoint_id": "CHK-705238",
     "campaign_id": "CMP-801425",
-    "version": 2,
-    "status": "running",
-    "current_batch": 2,
-    "last_completed_batch": 1,
+    "version": 3,
+    "status": "completed",
+    "current_batch": null,
+    "last_completed_batch": 2,
     "total_batches": 2,
     "total_users": 3,
-    "processed_users": 2,
-    "simulated_users": 2,
+    "processed_users": 3,
+    "simulated_users": 3,
     "skipped_users": 0,
     "failed_users": 0,
-    "last_processed_user_id": "1467517006944272660",
+    "last_processed_user_id": "1521945104217280652",
     "processed_user_ids": [
       "1374428830277701815",
-      "1467517006944272660"
+      "1467517006944272660",
+      "1521945104217280652"
     ],
     "started_at": "2026-10-04T20:43:54.110Z",
-    "updated_at": "2026-10-04T20:44:02.326Z",
-    "checkpoint_at": "2026-10-04T20:44:02.326Z"
+    "updated_at": "2026-10-04T20:44:05.563Z",
+    "checkpoint_at": "2026-10-04T20:44:05.563Z"
   }
 ]
