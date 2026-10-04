@@ -40,9 +40,10 @@
     ],
     "message": "PIZZ JOIN 7E SERVER",
     "batch_size": 2,
-    "status": "draft",
+    "status": "running",
     "created_at": "2026-10-04T20:38:31.820Z",
-    "updated_at": "2026-10-04T20:38:31.820Z",
-    "recovery_count": 0
+    "updated_at": "2026-10-04T20:43:55.234Z",
+    "recovery_count": 0,
+    "started_at": "2026-10-04T20:43:55.098Z"
   }
 ]
