@@ -30,5 +30,19 @@
     "lock": null,
     "worker_id": null,
     "completed_at": "2026-10-03T14:45:16.992Z"
+  },
+  {
+    "campaign_id": "CMP-801425",
+    "name": "FF TOURNAMENT",
+    "source_guild_id": "1234814455116861470",
+    "target_guild_ids": [
+      "1551320256801153047"
+    ],
+    "message": "PIZZ JOIN 7E SERVER",
+    "batch_size": 2,
+    "status": "draft",
+    "created_at": "2026-10-04T20:38:31.820Z",
+    "updated_at": "2026-10-04T20:38:31.820Z",
+    "recovery_count": 0
   }
 ]
