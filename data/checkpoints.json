@@ -40,5 +40,24 @@
     "started_at": "2026-10-03T14:44:37.456Z",
     "updated_at": "2026-10-03T14:45:16.001Z",
     "checkpoint_at": "2026-10-03T14:45:16.001Z"
+  },
+  {
+    "checkpoint_id": "CHK-705238",
+    "campaign_id": "CMP-801425",
+    "version": 1,
+    "status": "running",
+    "current_batch": 1,
+    "last_completed_batch": 0,
+    "total_batches": 2,
+    "total_users": 3,
+    "processed_users": 0,
+    "simulated_users": 0,
+    "skipped_users": 0,
+    "failed_users": 0,
+    "last_processed_user_id": null,
+    "processed_user_ids": [],
+    "started_at": "2026-10-04T20:43:54.110Z",
+    "updated_at": "2026-10-04T20:43:54.110Z",
+    "checkpoint_at": "2026-10-04T20:43:54.110Z"
   }
 ]
